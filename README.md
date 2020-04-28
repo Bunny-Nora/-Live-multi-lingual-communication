@@ -4,6 +4,7 @@ This program is going to use WebRTC and google cloud APIs to build a peer to pee
 ### Updates
 * [3.30]: add react app in branch <a href="https://github.com/Bunny-Nora/Live-multi-lingual-communication/tree/reach">[react]</a> .
 * [4.10]: <a href="https://github.com/Bunny-Nora/Live-multi-lingual-communication/tree/webrtc">Achieve WebRTC p2p communication with socket.io </a>
+* [4.27]: deploy on aws.  try <a href="http://3.133.92.223:8080/"> http://3.133.92.223:8080/</a> while set this origin as insecure origin in chrome. 
 
 
 ## Team Member
