@@ -1,0 +1,134 @@
+<!--
+ Copyright 2016 Google Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta name="description" content="Realtime communication with WebRTC" />
+  <meta name="author" content="//samdutton.com">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta itemprop="name" content="GitHub Pages site for Google codelab: Realtime communication with WebRTC">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="shortcut icon" href="#">
+  <meta charset="UTF-8">
+  <base target="_blank">
+
+  <title>Realtime communication with WebRTC</title>
+
+  <link rel="stylesheet" href="index.css" />
+  <!-- bootstrapcdn -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+
+<body class="body-bg">
+
+<div id="root">
+  <div class="video-wrapper">
+    <div class="localMedia">
+      <video id="localVideo" autoplay playsinline>display the stream from getUserMedia()</video>  
+      <!-- <textarea id="dataChannelSend" disabled placeholder="Press Start, enter some text, then press Send."></textarea> -->
+    </div>
+    <div class="remoteMedia container" id="remoteMedia">
+      <div class="remoteUserSubtitles row" id="remoteUserSubtitles" style="color:red ; font-size:25px">
+        Subtitles Displayed Here
+      </div>
+      <div class="remoteUserTrans row" id="remoteUserTrans" style="color:blue ; font-size:25px">
+        Tranlation Displayed Here
+      </div>
+    </div>
+    <video id="remoteVideo" autoplay playsinline>show the same video streamed via RTCPeerconnection.</video>
+    <!-- <textarea id="dataChannelReceive" disabled></textarea> -->
+    
+  </div>
+  <div id="container" class="container">
+    <div class="row">
+      <!-- <div class="col-12 col-sm-3">
+        <button id="startButton" class="rounded-pill">speech recognition abort</button>
+      </div> -->
+      <div class="col-12 col-sm-3">
+        <div>Your language is: <span class="uk-icon-info-circle" data-uk-tooltip="" title="Please, select the language you are speaking right now"></span></div>
+                        
+                        <select id="languageSelector" onchange="updateLanguage()">
+                            <option value="en">English</option>
+                            <option value="cmn">中文</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="it">Italiano</option>
+                            <option value="hu">Magyar</option>
+                            <option value="no">Norsk</option>
+                            <option value="pl">Polski</option>
+                            <option value="pt">Português</option>
+                            <option value="sv">Svenska</option>
+                            <option value="ar">العربية</option>
+                            <option value="he">עברית</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="ru">Pусский</option>
+                        </select>
+        <div class="col-12  col-sm-3">
+          <button id="subtitleButton" class="rounded-pill">add subtitle</button>
+        </div>
+      </div>
+      </div  class="col-12 col-sm-3">
+        <div>subtitle language is: <span class="uk-icon-info-circle" data-uk-tooltip="" title="Please, select the language you want to translate to right now"></span></div>
+                          
+                          <select id="subLanguageSelector" onchange="updateSubLanguage()">
+                              <option value="en">English</option>
+                              <option value="cmn">中文</option>
+                              <option value="es">Español</option>
+                              <option value="fr">Français</option>
+                              <option value="it">Italiano</option>
+                              <option value="hu">Magyar</option>
+                              <option value="no">Norsk</option>
+                              <option value="pl">Polski</option>
+                              <option value="pt">Português</option>
+                              <option value="sv">Svenska</option>
+                              <option value="ar">العربية</option>
+                              <option value="he">עברית</option>
+                              <option value="ja">日本語</option>
+                              <option value="ko">한국어</option>
+                              <option value="ru">Pусский</option>
+                          </select>
+          <div class="col-12  col-sm-3">
+            <button id="tranlationButton" class="rounded-pill">add tranalation</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-3">
+        <div class="speechRecognitionIndicatorOff" id="speechRecognitionIndicator">Speech Recognition Indicator <span class="uk-icon-info-circle" data-uk-tooltip="" title="Your speech is being used for providing real-time captioning"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- socket.io -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- adapter.js is a shim to insulate apps from spec changes and prefix differences. 
+    (Though in fact, the standards and protocols used for WebRTC implementations are highly stable, and there are only a few prefixed names.)
+    The adapter.js GitHub repo explains techniques for making sure your app always accesses the most recent version.
+    For full information about WebRTC interop, see webrtc.org/web-apis/interop. -->
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <!-- bootstrapcdn JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <!-- self-define js -->
+  <script src="speech2text.js"></script>
+  <script src="main5.js"></script>
+  
+</body>
+</html>

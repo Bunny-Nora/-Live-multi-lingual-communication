@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta name="description" content="info" />
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta itemprop="name" content="GitHub Pages site for Google codelab: Realtime communication with WebRTC">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="shortcut icon" href="#">
+  <meta charset="UTF-8">
+  <base target="_blank">
+
+  <title>Realtime communication with WebRTC</title>
+
+  <link rel="stylesheet" href="index.css" />
+  <!-- bootstrapcdn -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+
+<body class="body-bg">
+<div style="text-align: center;
+            width: 350px;
+            height: 350px;
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;">
+  <form class="container" id="access-form">
+    <div class="row align-items-start">
+        <label class="col-6">Username:</label>
+        <input type="text" id="username" class="col-6" />
+    </div>
+    <div class="row align-items-center">
+      <label class="col-6">Room:   </label>
+      <input type="text" id="room" class="col-6"/>
+    </div>
+    <div class="row align-items-end">
+        <label class="col-3"> </label>
+        <button class="col-6" type="button" onclick="goToRoom(username.value, room.value)">START</button>
+        <label class="col-3"> </label>
+    </div>
+  </form>
+</div>
+  <!-- socket.io -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- adapter.js is a shim to insulate apps from spec changes and prefix differences. 
+    (Though in fact, the standards and protocols used for WebRTC implementations are highly stable, and there are only a few prefixed names.)
+    The adapter.js GitHub repo explains techniques for making sure your app always accesses the most recent version.
+    For full information about WebRTC interop, see webrtc.org/web-apis/interop. -->
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <!-- bootstrapcdn JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <!-- self-define js -->
+  <script src="speech2text.js"></script>
+  <script src="index.js"></script>
+  
+</body>
+</html>
